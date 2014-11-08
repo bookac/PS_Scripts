@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
-	GameObject Player;
-	GameObject Enemy;
+	public GameObject Player, Enemy;
 
 	private Transform myTransform;				// this transform
 	private Vector3 destinationPosition;		// The destination Point
