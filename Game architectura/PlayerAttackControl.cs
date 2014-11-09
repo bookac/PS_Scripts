@@ -7,6 +7,7 @@ public class PlayerAttackControl : MonoBehaviour {
 	public RandomizeEnemy enemy;
 	public GameObject EnemyToDie;
 	public int scoreCounter;
+	public GameObject score_Label;
 
 	List<GameObject> listOfDedlineEnemys;
 	bool gameOver;
@@ -15,6 +16,7 @@ public class PlayerAttackControl : MonoBehaviour {
 		listOfDedlineEnemys = new List<GameObject> ();
 		gameOver = false;
 		scoreCounter = 0;
+		score_Label.GetComponent<UILabel> ().text = "0";
 	}
 
 	void OnTriggerEnter(Collider collision){
@@ -22,6 +24,7 @@ public class PlayerAttackControl : MonoBehaviour {
 		if(collision.gameObject == EnemyToDie){
 			PlayerAttack(EnemyToDie);
 			scoreCounter = scoreCounter +1;
+			score_Label.GetComponent<UILabel> ().text = "" + scoreCounter;
 
 		}
 
