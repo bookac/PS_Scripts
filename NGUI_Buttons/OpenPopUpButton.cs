@@ -10,5 +10,6 @@ public class OpenPopUpButton : MonoBehaviour {
 	{
 		PopUp.animation.Play ("PopUp_Open");
 		BG_Dark.SetActive (true);
+		PopUp.SetActive (true);
 	}
 }
