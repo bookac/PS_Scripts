@@ -6,6 +6,7 @@ public class PlayerAttackControl : MonoBehaviour {
 
 	public RandomizeEnemy enemy;
 	public GameObject EnemyToDie;
+	public int scoreCounter;
 
 	List<GameObject> listOfDedlineEnemys;
 	bool gameOver;
@@ -13,12 +14,15 @@ public class PlayerAttackControl : MonoBehaviour {
 	void Start(){
 		listOfDedlineEnemys = new List<GameObject> ();
 		gameOver = false;
+		scoreCounter = 0;
 	}
 
 	void OnTriggerEnter(Collider collision){
 		// If occurre collision with some enemy object do this
 		if(collision.gameObject == EnemyToDie){
 			PlayerAttack(EnemyToDie);
+			scoreCounter = scoreCounter +1;
+
 		}
 
 		for (int i=0; i<enemy.listOfEnemys.Count; i++) {
@@ -61,4 +65,5 @@ public class PlayerAttackControl : MonoBehaviour {
 		}
 		StopCoroutine("GameOver");
 	}
+	
 }
