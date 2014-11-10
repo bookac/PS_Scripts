@@ -6,8 +6,7 @@ public class PlayerAttackControl : MonoBehaviour {
 
 	public RandomizeEnemy enemy;
 	public GameObject EnemyToDie;
-	public int scoreCounter;
-	public GameObject score_Label;
+	int scoreCounter;
 
 	List<GameObject> listOfDedlineEnemys;
 	bool gameOver;
@@ -16,7 +15,6 @@ public class PlayerAttackControl : MonoBehaviour {
 		listOfDedlineEnemys = new List<GameObject> ();
 		gameOver = false;
 		scoreCounter = 0;
-		score_Label.GetComponent<UILabel> ().text = "0";
 	}
 
 	void OnTriggerEnter(Collider collision){
@@ -24,10 +22,10 @@ public class PlayerAttackControl : MonoBehaviour {
 		if(collision.gameObject == EnemyToDie){
 			PlayerAttack(EnemyToDie);
 			scoreCounter = scoreCounter +1;
-			score_Label.GetComponent<UILabel> ().text = "" + scoreCounter;
-
 		}
-
+		// If enemy tuch player count 0.4 sec and if 
+		// player dot kill the enemy or avoid collision
+		// GAME OVER!!
 		for (int i=0; i<enemy.listOfEnemys.Count; i++) {
 			if(enemy.listOfEnemys[i] == collision.gameObject){
 				gameOver = true;
@@ -63,10 +61,15 @@ public class PlayerAttackControl : MonoBehaviour {
 		if(gameOver){
 			if(listOfDedlineEnemys.Count != 0){
 				print("GameOver");
+
+				if(scoreCounter > PlayerPrefs.GetInt("SCORE"))
+					PlayerPrefs.SetInt("SCORE", scoreCounter);
+				PlayerPrefs.Save();
+
+				print(PlayerPrefs.GetInt("SCORE").ToString());
 				Application.LoadLevel(0);
 			}
 		}
 		StopCoroutine("GameOver");
-	}
-	
+	}	
 }
