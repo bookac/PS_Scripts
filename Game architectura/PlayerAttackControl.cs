@@ -6,6 +6,8 @@ public class PlayerAttackControl : MonoBehaviour {
 
 	public RandomizeEnemy enemy;
 	public GameObject EnemyToDie;
+	public GameObject score_Label;
+
 	int scoreCounter;
 
 	List<GameObject> listOfDedlineEnemys;
@@ -15,6 +17,7 @@ public class PlayerAttackControl : MonoBehaviour {
 		listOfDedlineEnemys = new List<GameObject> ();
 		gameOver = false;
 		scoreCounter = 0;
+		score_Label.GetComponent<UILabel> ().text = "0";
 	}
 
 	void OnTriggerEnter(Collider collision){
@@ -22,6 +25,7 @@ public class PlayerAttackControl : MonoBehaviour {
 		if(collision.gameObject == EnemyToDie){
 			PlayerAttack(EnemyToDie);
 			scoreCounter = scoreCounter +1;
+			score_Label.GetComponent<UILabel> ().text = "" + scoreCounter;
 		}
 		// If enemy tuch player count 0.4 sec and if 
 		// player dot kill the enemy or avoid collision
