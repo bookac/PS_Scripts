@@ -8,6 +8,8 @@ public class PlayerAttackControl : MonoBehaviour {
 	public GameObject EnemyToDie;
 	public GameObject score_Label;
 
+	public GameObject GameOver_PopUp;
+
 	int scoreCounter;
 
 	List<GameObject> listOfDedlineEnemys;
@@ -24,8 +26,6 @@ public class PlayerAttackControl : MonoBehaviour {
 		// If occurre collision with some enemy object do this
 		if(collision.gameObject == EnemyToDie){
 			PlayerAttack(EnemyToDie);
-			scoreCounter = scoreCounter +1;
-			score_Label.GetComponent<UILabel> ().text = "" + scoreCounter;
 		}
 		// If enemy tuch player count 0.4 sec and if 
 		// player dot kill the enemy or avoid collision
@@ -58,6 +58,8 @@ public class PlayerAttackControl : MonoBehaviour {
 	
 	void DieEnemy(GameObject obj){
 		Destroy(obj);
+		scoreCounter = scoreCounter +1;
+		score_Label.GetComponent<UILabel> ().text = "" + scoreCounter;
 	}
 
 	IEnumerator GameOver(float waitTime){
@@ -65,13 +67,15 @@ public class PlayerAttackControl : MonoBehaviour {
 		if(gameOver){
 			if(listOfDedlineEnemys.Count != 0){
 				print("GameOver");
+				GameOver_PopUp.SetActive(true);
+				GameOver_PopUp.animation.Play ("PopUp_Open");
 
 				if(scoreCounter > PlayerPrefs.GetInt("SCORE"))
 					PlayerPrefs.SetInt("SCORE", scoreCounter);
 				PlayerPrefs.Save();
 
 				print(PlayerPrefs.GetInt("SCORE").ToString());
-				Application.LoadLevel(0);
+				//Application.LoadLevel(0);
 			}
 		}
 		StopCoroutine("GameOver");
