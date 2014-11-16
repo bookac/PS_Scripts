@@ -78,7 +78,6 @@ public class PlayerMovement : MonoBehaviour {
 			//Player.animation.Play("Run01");
 			transform.position = Vector3.MoveTowards(myTransform.position, destinationPosition, moveSpeed * Time.deltaTime);
 			transform.transform.LookAt(destinationPosition);
-			//Camera.main.transform.position = Vector2.Lerp(Camera.main.transform.position, destinationPosition,1f);
 		}
 	}
 
@@ -91,13 +90,11 @@ public class PlayerMovement : MonoBehaviour {
 		{
 			isMoving = true;
 			Player.animation.Play("Run01");
-			//Debug.Log("Run");
 		}
 		else
 		{
 			isMoving = false;
 			Player.animation.Play("Idle01");
-			//Debug.Log("Idle");
 		}
 		lasPosition = Player.transform.position;
 	}

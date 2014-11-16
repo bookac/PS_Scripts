@@ -4,30 +4,45 @@ using System.Collections.Generic;
 
 public class RandomizeEnemy : MonoBehaviour {
 	#region PUBLIC OBJECTS
-	public GameObject enemy, player;
-	public int enemyCounter, enemyLimit;
-	public List<GameObject> listOfEnemys, listOfCollidedEnemys;
+	public GameObject enemy, player, GameOver_PopUp, score_Label;
+	public GameObject EnemyToDie; // Init in EnemyControl class.
+
+	public int enemyCounter, enemyLimit, scoreCounter;
+	public bool deadPlayer{get; set;}
+
+	public List<GameObject> listOfEnemys;
 	#endregion
 
 	#region LOCAL PRIVATE OBJECTS
-	float xPos, zPos;
+	int realCounter;
+	float xPos, zPos, xNegPos, zNegPos;
 	GameObject clone;
 	#endregion
 
 	// Use this for initialization
 	void Start () {
 		clone = new GameObject ("Clone");
-		enemyLimit = 12;
+		deadPlayer = false;
+		enemyLimit = 30;
 		listOfEnemys = new List<GameObject> ();
-		listOfCollidedEnemys = new List<GameObject> ();
+
+		scoreCounter = 0; // count kills
+		score_Label.GetComponent<UILabel> ().text = scoreCounter.ToString(); // display number of dead enemys
+
 		StartCoroutine ("Randomize", 2f);
+		StartCoroutine ("Checkpoints", 100f);
 	}
 
 	#region ENEMY AI
 	Vector3 RandomGenerator(){
-		xPos = Random.Range (-5f,5f);
-		zPos = Random.Range (-5f,5f);
-		return new Vector3 (xPos, 0, zPos);
+		int rand = Random.Range(0,2);
+		xPos = Random.Range (2f + player.transform.position.x, 5f);
+		zPos = Random.Range (3f + player.transform.position.x,5f);
+		xNegPos = Random.Range (-5f, player.transform.position.x - 2f);
+		zNegPos = Random.Range (-5f, player.transform.position.x - 3f);
+
+		if(rand == 0) return new Vector3 (xPos, 0, zPos);
+		else return new Vector3 (xNegPos, 0, zNegPos);
 	}
 
 	IEnumerator Randomize(float waitTime) {
@@ -36,64 +51,18 @@ public class RandomizeEnemy : MonoBehaviour {
 		GameObject enemyClone = Instantiate (enemy, RandomGenerator(), Quaternion.LookRotation(player.transform.position)) as GameObject;
 		enemyClone.transform.LookAt (player.transform.position);
 		enemyClone.transform.parent = clone.transform;
-		enemyClone.name = enemyClone.name + enemyCounter.ToString();
-		enemyClone.GetComponent<BoxCollider>().isTrigger = true;
-		enemyClone.AddComponent<Rigidbody>();
-		enemyClone.GetComponent<Rigidbody>().useGravity = false;
-		enemyClone.GetComponent<Rigidbody>().isKinematic = false;
+		enemyClone.name = enemyClone.name + realCounter.ToString();
 		enemyClone.AddComponent<EnemyControl>();
 		listOfEnemys.Add (enemyClone);
-		enemyCounter++;
+		enemyCounter++; realCounter++;
 
 		if(enemyCounter < enemyLimit)
-			StartCoroutine ("Randomize", 5f);
+			StartCoroutine ("Randomize", 3f);
 	}
 
-	void Checkpoints(){
-		if (Time.time % 100 == 0) {
-			if(Time.time != 0)
-				enemyLimit += 5;
-		}
-	}
-
-	void EnemyAttackPlayer(){
-		for (int i=0; i<listOfEnemys.Count; i++) {
-			if(listOfEnemys[i].GetComponent<EnemyControl>().haveCollision){
-				listOfCollidedEnemys.Add(listOfEnemys[i]);
-
-				if(i%2 == 0)
-					listOfEnemys[i].collider.attachedRigidbody.velocity = new Vector3(0.5f,0,0);
-				else
-					listOfEnemys[i].collider.attachedRigidbody.velocity = new Vector3(-0.5f,0,0);
-
-			}
-			else{
-				listOfCollidedEnemys.Remove(listOfEnemys[i]);
-				listOfEnemys[i].collider.attachedRigidbody.velocity = new Vector3(0,0,0);
-				listOfEnemys[i].transform.position = Vector3.MoveTowards(
-					listOfEnemys[i].transform.position, player.transform.position, 0.4f * Time.deltaTime);
-
-				listOfEnemys[i].transform.LookAt(player.transform.position);
-			}
-		}
-	}
-
-	void CorrectEnemyCollision(){
-		for (int i=0; i<listOfCollidedEnemys.Count; i++) {
-			try{
-				if(i%2 == 0)
-					listOfCollidedEnemys[i].collider.attachedRigidbody.velocity = new Vector3(0.5f,0,0);
-				else
-					listOfCollidedEnemys[i].collider.attachedRigidbody.velocity = new Vector3(-0.5f,0,0);
-			}catch{}
-		}
+	IEnumerator Checkpoints(float waitTime){
+		yield return new WaitForSeconds(waitTime);
+		enemyLimit += 5;
 	}
 	#endregion
-
-	// Update is called once per frame
-	void Update () {
-		Checkpoints ();
-		EnemyAttackPlayer ();
-		CorrectEnemyCollision();
-	}
 }
