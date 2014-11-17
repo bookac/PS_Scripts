@@ -1,4 +1,4 @@
-﻿using UnityEngine;	
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +8,7 @@ public class RandomizeEnemy : MonoBehaviour {
 	public GameObject EnemyToDie; // Init in EnemyControl class.
 
 	public int enemyCounter, enemyLimit, scoreCounter;
-	public bool deadPlayer{get; set;}
+	public bool PlayerIsDead{get; set;}
 
 	public List<GameObject> listOfEnemys;
 	#endregion
@@ -22,7 +22,7 @@ public class RandomizeEnemy : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		clone = new GameObject ("Clone");
-		deadPlayer = false;
+		PlayerIsDead = false;
 		enemyLimit = 30;
 		listOfEnemys = new List<GameObject> ();
 

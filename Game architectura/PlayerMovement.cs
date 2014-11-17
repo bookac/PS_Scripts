@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
 	public GameObject Player, Enemy;
+	public RandomizeEnemy enemyControl;
 
 	private Transform myTransform;				// this transform
 	private Vector3 destinationPosition;		// The destination Point
@@ -30,6 +31,8 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void Update () {
+		if(enemyControl.PlayerIsDead) return;
+
 		CheckMovement();
 		// keep track of the distance between this gameObject and destinationPosition
 		destinationDistance = Vector3.Distance(destinationPosition, myTransform.position);
