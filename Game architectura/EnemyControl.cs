@@ -10,7 +10,7 @@ public class EnemyControl : MonoBehaviour {
 
 	void Awake(){
 		player = GameObject.Find("TheRunner");
-		enemyControl = GameObject.Find("Main Camera").GetComponent<RandomizeEnemy>();
+		enemyControl = GameObject.Find("MainCamera").GetComponent<RandomizeEnemy>();
 	}
 
 	void OnMouseDown(){
