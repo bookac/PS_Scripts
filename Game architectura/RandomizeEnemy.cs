@@ -23,7 +23,7 @@ public class RandomizeEnemy : MonoBehaviour {
 	void Start () {
 		clone = new GameObject ("Clone");
 		PlayerIsDead = false;
-		enemyLimit = 30;
+		enemyLimit = enemyLimit; //added by bookac
 		listOfEnemys = new List<GameObject> ();
 
 		scoreCounter = 0; // count kills

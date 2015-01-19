@@ -9,7 +9,7 @@ public class EnemyControl : MonoBehaviour {
 	float playerDistance;
 
 	void Awake(){
-		player = GameObject.Find("TheRunner");
+		player = GameObject.Find("Player");
 		enemyControl = GameObject.Find("MainCamera").GetComponent<RandomizeEnemy>();
 	}
 
