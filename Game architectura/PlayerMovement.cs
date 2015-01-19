@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour {
 	
 	
 	void Start () {
-		Player = GameObject.Find("theRunner01_v01");
+		Player = GameObject.Find("TheRunner");
 		Enemy = GameObject.Find("Enemy01");
 		myTransform = Player.transform;							// sets myTransform to this GameObject.transform
 		destinationPosition = myTransform.position;			// prevents myTransform reset
